@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -162,22 +162,39 @@ const Home = () => {
   const [isLoading, setIsloading] = useState(false);
   let confidence = 0;
 
-  const sendFile = async () => {
+  // const sendFile = async () => {
+  //   if (image) {
+  //     let formData = new FormData();
+  //     formData.append("file", selectedFile);
+  //     let res = await axios({
+  //       method: "post",
+  //       url: process.env.REACT_APP_API_URL,
+  //       data: formData,
+  //     });
+  //     if (res.status === 200) {
+  //       setData(res.data);
+  //     }
+  //     setIsloading(false);
+  //   }
+  // };
+  const sendFile = useCallback(async () => {
     if (image) {
-      let formData = new FormData();
-      formData.append("file", selectedFile);
-      let res = await axios({
-        method: "post",
-        // url: 'https://api-production-0a11.up.railway.app/predict',
-        url: process.env.REACT_APP_API_URL,
-        data: formData,
-      });
-      if (res.status === 200) {
-        setData(res.data);
-      }
-      setIsloading(false);
+        let formData = new FormData();
+        formData.append("file", selectedFile);
+
+        let res = await axios({
+            method: "post",
+            url: process.env.REACT_APP_API_URL,
+            data: formData,
+        });
+
+        if (res.status === 200) {
+            setData(res.data);
+        }
+
+        setIsloading(false);
     }
-  };
+}, [image, selectedFile]);
 
   const clearData = () => {
     setData(null);
@@ -195,13 +212,12 @@ const Home = () => {
     setPreview(objectUrl);
   }, [selectedFile]);
 
-  useEffect(() => {
-    if (!preview) {
-      return;
-    }
+useEffect(() => {
+    if (!preview) return;
+
     setIsloading(true);
     sendFile();
-  }, [preview]);
+}, [preview, sendFile]);
 
   const onSelectFile = (files) => {
     if (!files || files.length === 0) {
