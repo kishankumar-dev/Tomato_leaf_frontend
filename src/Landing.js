@@ -4,7 +4,6 @@ import { Provider, Heading, Subhead } from "rebass";
 import {
   Hero,
   Flex,
-  CallToAction,
   ScrollDownIndicator,
 } from "react-landing-page";
 import { throttle } from "lodash";
