@@ -168,8 +168,8 @@ const Home = () => {
       formData.append("file", selectedFile);
       let res = await axios({
         method: "post",
-        url: 'https://api-production-0a11.up.railway.app/predict',
-        // url: process.env.REACT_APP_API_URL,
+        // url: 'https://api-production-0a11.up.railway.app/predict',
+        url: process.env.REACT_APP_API_URL,
         data: formData,
       });
       if (res.status === 200) {
